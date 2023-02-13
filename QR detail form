@@ -1,0 +1,86 @@
+// Soure code to generate a QR details form 
+<html>
+	<head>
+		<title>
+			User Registration Form
+		</title>
+		<script>
+			function validateForm(){
+				var fname=document.getElementById("fname").value;
+				var mname=document.getElementById("mname").value;
+                var lname = document.getElementById("lname").value;
+                var gender = document.getElementById("gender").value;
+                var blood = document.getElementById("blood").value;
+                var allergies = document.getElementById("allergies").value;
+                var chronic = document.getElementById("chronic").value;
+                var medication_allergies = document.getElementById("medication_allergies").value;
+
+                var output = "<table><tr> First Name : "+fname +"<br></tr><tr>Middle Name : "+mname + "<br></tr><tr>Last Name : " + lname +  "<br></tr><tr>Gender : " + gender + "<br></tr><tr>Blood Group : " + blood +"<br></tr><tr>Allergies : " + allergies + "<br></tr><tr>Chronic Illness : " + chronic + "</tr></table>";
+
+                 document.write(output);
+
+				if(flag==1)
+					return false;
+
+
+			}
+		</script>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<center>
+		<h2>Patient Details Page</h2>
+		<form onsubmit="return validateForm()">
+			<table>
+			<tr>
+                <td>
+                    <label>First Name</label>
+                </td>
+                <td>
+                    <input type="text" value="" placeholder="Enter Your First Name" id="fname" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Middle Name</label>
+                </td>
+                <td>
+                    <input type="text" value="" placeholder="Enter Your Middle Name" id="mname">
+                </td>
+            </tr>
+            <tr>
+			<td><label>Last-Name</label></td>
+			<td><input type="text" value="" placeholder="enter last name" id="lname"></td>
+			</tr>
+			<tr>
+                <td>
+                    <label>DATE OF BIRTH</label>
+                </td>
+                <td>
+                    <input type="datetime-local" value="" placeholder="enter your dob" id="dob" required>
+                </td>
+             </tr>
+			<tr>
+			<td><label>Gender(M/F):</label></td>
+			<td><input type="text" value="" placeholder="enter your gender" id="gender" required></td>
+			</tr>
+
+			<tr><td><label>Blood Group:</label></td>
+			<td><input type="text" value="" placeholder="enter your Blood group" id="blood" required></td>
+		</tr>
+            <tr><td><label>Allergies:</label></td>
+			<td><input type="text" value="" placeholder="enter if any allergies" id="allergies"></td>
+		</tr>
+         <tr><td><label>Chronic Illness:</label></td>
+			<td><input type="text" value="" placeholder="enter if any chronic illness" id="chronic"></td>
+		</tr>
+         <tr><td><label>Medication Allergies:</label></td>
+			<td><input type="text" value="" placeholder="enter if any medication allergies" id="medication_allergies"></td>
+		</tr>
+
+			<tr><td><td><input type="submit" value="Register" id="reg" ></td></tr>
+		 </table>
+		</form>
+		</center>
+	</body>
+</html>
