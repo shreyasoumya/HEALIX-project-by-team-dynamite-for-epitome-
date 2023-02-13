@@ -1,0 +1,141 @@
+//main page source code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img{
+            height: 200px;
+            width:200px;
+            border:2px black solid;
+        }
+    </style>
+</head>
+<body>
+    <center>
+    <label>IMAGE NAME</label><input type="text" id="namebox"><label id="extlab"></label><br><br>
+    <img id="myimg"><label id="upprogress"></label><br><br>
+    <button id="selbtn">SELECT IMAGE</button>
+    <button id="upbtn">UPLOAD IMAGE</button>
+    <button id="downbtn">RETRIEVE IMAGE</button>
+    </center>
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDj7qjj0ClfXqLHnOhzalzNPfXEW3dFyvE",
+          authDomain: "epitome-95bbf.firebaseapp.com",
+          projectId: "epitome-95bbf",
+          storageBucket: "epitome-95bbf.appspot.com",
+          messagingSenderId: "698042698775",
+          appId: "1:698042698775:web:dba54c816b1b3ad5e46052"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+      import {getStorage,ref as sRef , uploadBytesResumable,getDownloadURL}
+      from "https://www.gstatic.com/firebasejs/9.16.0/firebase-storage.js"
+       
+      //-----CLOUD STORE DATABASE------
+      //import {getFirestore,doc,getDoc,setDoc,collection}
+      //from "https://www.gstatic.com/firebasejs/9.16.0/firebase-storage.js";
+      //const clouddb=getFirestore();
+
+      //---------------------------VARIABLES AND REFERENCES------------------//
+
+           var files=[];
+           var reader= new FileReader();
+
+      //getting elements by using document.getElementById() method
+
+           var namebox= document.getElementById('namebox');
+           var extlab= document.getElementById('extlab');
+           var myimg= document.getElementById('myimg');
+           var proglab= document.getElementById('upprogress');
+           var SelBtn= document.getElementById('selbtn');
+           var UpBtn= document.getElementById('upbtn');
+           var DownBtn= document.getElementById('downbtn');
+
+           var input=document.createElement('input');
+           input.type='file';
+           input.onchange= e =>{
+              files=e.target.files;
+                var extention =GetFileExt(files[0]);
+                var name=GetFileName(files[0]);
+                namebox.value= name;
+                extlab.innerHTML=extention;
+                reader.readAsDataURL(files[0]);
+           }
+
+           reader.onload=function(){
+            myimg.src=reader.result;
+           }
+
+        //-----------------SELECTION OF FILE---------------------//   
+
+            SelBtn.onclick=function(){
+                input.click();
+            }
+            
+            function GetFileExt(file){
+                var temp=file.name.split('.');
+                var ext=temp.slice((temp.length-1),(temp.length));
+                return '.'+ext[0];
+            }
+
+            function GetFileName(file){
+                var temp=file.name.split('.');
+                var fname=temp.slice(0,-1).join('.');
+                return fname;
+            }
+    //<--------------UPLOAD PROCESS-------------------------------->
+
+        async function UploadProcess(){
+                var ImgToUpload=files[0];
+                var ImgName=namebox.value+extlab.innerHTML;
+                const metaData={
+                    contentType:ImgToUpload.type
+                }
+                const storage=getStorage();
+                const storageRef=sRef(storage,"Images/"+ImgName);
+                const UploadTask=uploadBytesResumable(storageRef,ImgToUpload,metaData);
+                UploadTask.on('state-changed',(snapshot)=>{
+                    var progress=(snapshot.bytesTransferred/snapshot.totalBytes)*100;
+                    proglab.innerHTML="Upload "+progress+"%";
+                },
+                (error)=>{
+                    alert("error: image not uploaded!");
+                },
+                ()=>{
+                    getDownloadURL(UploadTask.snapshot.ref).then((downloadURL)=>{
+                        SaveURLtoFiresto(downloadURL);
+                    })
+                }
+                );
+        }
+               
+    //----FUNCTION FOR FIRESTORE DATABASE----------//
+             async function SaveURLtoFirestore(url){
+                    var name=namebox.value;
+                    var ext=extlab.innerHTML;
+                    var ref=doc(clouddb,"ImageLinks/"+name);
+                    await setDoc(ref,{
+                        Imagename:(name+ext),
+                        ImageURL:url
+                    })
+             }
+             UpBtn.onclick=UploadProcess;
+      </script>
+
+</body>
+</html>
