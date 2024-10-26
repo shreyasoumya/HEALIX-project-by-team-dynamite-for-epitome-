@@ -23,8 +23,7 @@ HEALIX is a full-stack chat application that facilitates communication between d
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/shreyasoumya/
-HEALIX-project-by-team-dynamite-for-epitome-.git
+   git clone https://github.com/shreyasoumya/HEALIX-project-by-team-dynamite-for-epitome-.git
 2. Navigate to the project directory:
     ```bash
     cd HEALIX
@@ -35,6 +34,7 @@ HEALIX-project-by-team-dynamite-for-epitome-.git
 5. Run the application:
     ```bash
     npm start
+    
 
  ## Usage
 
